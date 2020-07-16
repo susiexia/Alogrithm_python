@@ -96,11 +96,12 @@ def pair_sum(nums, target):
 #print(pair_sum([1,3,2,2], 4))
             
 
-def pair_sum_set(nums, target):
-    if len(nums) <2:
-        return None
+def pair_sum_2set(nums, target):
     seen =set()   # count dictionary
     output =set()
+    if len(nums) <2:
+        return None
+
     for num in nums:
         out = target - num
 
@@ -112,7 +113,7 @@ def pair_sum_set(nums, target):
     return '\n'.join(map(str,list(output)))
     
 
-print(pair_sum_set([1,3,2,2], 4))
+print(pair_sum_2set([1,3,2,2], 4))
 # %%
 # largest sum:
 # take an array with positive and negative integers and find max sum of array
@@ -260,6 +261,7 @@ def common_while(a, b):
     
     # 2 iteration in one while!!!!!!!!!!!!!!!!!!!!
     # need to consider if elements doen't same, move index
+    # BUT its woring, due to maybe next index has same value
     while i <len(a) and j<(len(b)):
         if a[i] == b[j]:
             output.append(a[i])
@@ -267,6 +269,7 @@ def common_while(a, b):
         j +=1
     return output   
 
+# %%
 # !!!!!!!!!!!!!!!!two pointer ofr two array!!!!!!!!!!
 def two_pointer_common(a, b):
     output = []
@@ -278,15 +281,18 @@ def two_pointer_common(a, b):
         if a[i] == b[j]:
             output.append(a[i])
             i +=1
-            j +=1
+            j +=1   # why use 2
         elif a[i] > b[j]:
             j +=1
         else:
             i +=1
     return output  
 
-print(common_while(a,b))  # wrong: [1, 4]
-print(two_pointer_common(a,b)) # right, [1, 4, 9]
+a=[1,3,3,5,7,8,9]
+b=[1,2,4,5,9,10,11]
+#print(common_while(a,b))  # wrong: [1, 4] 
+# due to '9' one located on last element, another is located before laste one
+print(two_pointer_common(b,a)) # right, [1, 4, 9]
 # %%
 # O(n^2)
 def find_common_element(a, b):
@@ -312,3 +318,105 @@ a=[1,3,4,6,7,9]
 b=[1,2,4,5,9,10]
 print(find_common_element(a,b))
 print(find_hist(a,b))
+# %%
+# MINE SWAEEPER 扫雷 ([[0,0],[0,1]], 3row, 4 columns)
+# 3 arugments, bombs->list of bomb location, list of list matrix
+# return 3*4 array, (-1) =bomb
+
+# bombs =[ [0,1], [1,2] ]
+# mark bombs like JSON, slice row_list first then col_list
+def mine_sweeper(bombs, row, col):
+    # make a metrix with all 0 value
+    field = [[0 for c in range(col)]for r in range(row)]
+
+    for bombs_list_loc in bombs:
+        # simul arrange 2 variables as tuple from 1 list
+        (b_row, b_col) = bombs_list_loc
+        # mark bombs in field: JSON!!!!!!!!!!!!!!!
+        field[b_row][b_col] = -1
+    
+    # return field： a all 0 metrix with 1 marked bomb
+        # neibor 3*3 sub metrix
+        row_neibor_range = range(b_row -1, b_row +2) # may has negative
+        col_neibor_range = range(b_col -1, b_col +2) 
+
+        for i in row_neibor_range:
+            for j in col_neibor_range:
+                # 3 restraint 
+                if (0 <= i < row) and (0 <= j < col) and (field[i][j] != -1):
+                    # update neibors
+                    field[i][j] +=1   # neibor marka number
+                    # in one bomb loop, each qualify cell can be mark as 1
+                    # BUT for next bomb loop, same cell will incremently mark as 2,3,4
+    return field
+
+
+
+print(mine_sweeper([[0,0],[1,2]], 3, 4))
+
+# %%
+output1 = set()
+output2 = set()
+resualt = []
+for n in range(1,11):
+    for m in range(1,6):
+        resualt.append((n,m))
+        output1.add((n,m))
+        output2.add((m,n))
+        
+print(len(output), len(output2), len(resualt))
+print(output1 == output2)
+
+# %%
+# MINE SWAEEPER some throught
+# two independent loop to make a matrix
+def my_minesweeper(bombs, row,col):
+    field = []
+    output =[]
+    
+    for c in range(col):
+        c =0
+        field.append(c)
+    for r in range(row):
+        output.append(field)
+    print(output)
+
+print(my_minesweeper(1, 3,4))
+
+# %%
+def matrix_maker(bombs, num_rows, num_cols):
+    field = [[0 for c in range(num_cols)] for r in range(num_rows)]
+    print(field)
+# This is how to make empty 3*4 matrix, column first
+print(matrix_maker(None, 3,4))
+
+
+def tuple_matrix(bombs, num_rows, num_cols):
+    field = [[(r,c) for c in range(num_cols)] for r in range(num_rows)]
+    print(field)
+
+print(tuple_matrix(None, 3,4))
+
+def list_compre_nested(bombs, num_rows, num_cols):
+    field = [(r,c) for c in range(num_cols) for r in range(num_rows)]
+    print(field)  # only one large list contains tuple
+    # !!!!!!!!!!!!!!
+    # tuple_matrix function is two independent loops, run col loop frist, then list them to second loop
+    # list_compre_nested is nested loop and first cols is outer loop, run the nested loop first as regular sequence
+
+print(list_compre_test(None, 3,4))
+
+def flatten_matrix(matrix):
+    flatten = [x for sublist in matrix for x in sublist]
+    flatten.sort()
+    # nested loop, write the outer loop first!!!!!!!!!!!
+    return flatten
+
+print(flatten_matrix([[1, 4, 7], [2, 3], [6, 6, 10, 9]]))
+
+def flatten_matrix_conditional(matrix):
+    output = [v for sublist in matrix for v in sublist if len(v) > 6]
+    return sorted(output)
+
+print(flatten_matrix_conditional([['Mercury', 'Venus', 'Earth'], ['Mars', 'Jupiter', 'Saturn'], ['Uranus', 'Neptune', 'Pluto']] ))
+# %%
