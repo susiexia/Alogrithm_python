@@ -249,3 +249,66 @@ def enu_rotation(a, b):
 print(enu_rotation(['a','b','c','d'],['b','c','d','a']))
 
 # %%
+# common element in two sorted array
+# use while, and set up two iteration for 2 array! no need nested!!!!
+# because this is a sorted array, same opstion should have same element if common
+
+def common_while(a, b):
+    output = []
+    i = 0
+    j = 0
+    
+    # 2 iteration in one while!!!!!!!!!!!!!!!!!!!!
+    # need to consider if elements doen't same, move index
+    while i <len(a) and j<(len(b)):
+        if a[i] == b[j]:
+            output.append(a[i])
+        i +=1
+        j +=1
+    return output   
+
+# !!!!!!!!!!!!!!!!two pointer ofr two array!!!!!!!!!!
+def two_pointer_common(a, b):
+    output = []
+    i = 0
+    j = 0
+
+    while i <len(a) and j<(len(b)):
+        # option 1
+        if a[i] == b[j]:
+            output.append(a[i])
+            i +=1
+            j +=1
+        elif a[i] > b[j]:
+            j +=1
+        else:
+            i +=1
+    return output  
+
+print(common_while(a,b))  # wrong: [1, 4]
+print(two_pointer_common(a,b)) # right, [1, 4, 9]
+# %%
+# O(n^2)
+def find_common_element(a, b):
+    output =[]
+    if a == b:
+        return a
+    for x in a:
+        for y in b:
+            if x==y:
+                output.append(x)
+    return output
+
+# O(n), space O(n)
+def find_hist(a,b):
+    result = []
+    dit = {item :i for i, item in enumerate(a)}
+    for key in dit:
+        if key in b:
+            result.append(key)
+    return result
+
+a=[1,3,4,6,7,9]
+b=[1,2,4,5,9,10]
+print(find_common_element(a,b))
+print(find_hist(a,b))
