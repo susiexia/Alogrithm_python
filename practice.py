@@ -30,7 +30,7 @@ def anagrams(str1, str2):
         return True
 
 # 三个循环。 用一个DICT 在第二个str中减去, 最后循环dict看是不是全是O
-def anagrams(str1, str2):
+def anagrams_3loop(str1, str2):
     # clean
     if len(str1) != len(str2):
         return False
@@ -55,7 +55,7 @@ def anagrams(str1, str2):
 
 
 # easy way:O(n logn) due to sort, and space: O(1)
-def anagrams(str1, str2):
+def sorted_anagrams(str1, str2):
     if len(str1) != len(str2):
         return False
     else:
@@ -70,7 +70,7 @@ def two_sum(lst, target):
             return (i, j)
 
 # enumerate() and dictionary:
-def two_sum(lst, target):
+def two_sum_oneDict_one_Loop(lst, target):
     dic = dict()
     for index, value in enumerate(lst):
         n = target - value
@@ -80,16 +80,172 @@ def two_sum(lst, target):
             return (dic[n], index)
 
 # %%
-# array pair (sum [1,3,2,2], 4) --- 2 pairs (1,3) (2,2)
+# array pair (sum [1,3,2,2], 4) ---> 2 pairs (1,3) (2,2)
 
 def pair_sum(nums, target):
+    if len(nums) <2:
+        return None
+    output = set()
     for i in range(len(nums)):
         for j in range(len(nums)-1,-1,-1):
             if nums[i] + nums[j] == target:
-                return  (nums[i], nums[j])
+                output.add((min(nums[i], nums[j]), max(nums[i], nums[j])))
+    return '\n'.join(map(str,list(output))
     
 
-pair_sum([1,3,2,2], 4)
+#print(pair_sum([1,3,2,2], 4))
             
+
+def pair_sum_set(nums, target):
+    if len(nums) <2:
+        return None
+    seen =set()   # count dictionary
+    output =set()
+    for num in nums:
+        out = target - num
+
+        if out not in seen:
+            seen.add(num)
+        else:
+            output.add((min(num, out), max(num, out)))
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    return '\n'.join(map(str,list(output)))
+    
+
+print(pair_sum_set([1,3,2,2], 4))
+# %%
+# largest sum:
+# take an array with positive and negative integers and find max sum of array
+
+# set up same init max for index 0, then loop and compare that 2 max
+
+def max_sum(arr):
+    a =[]
+    if len(arr) == 0:
+        return None
+    # init two variables at same time
+    max_sum = current_sum = arr[0]
+
+    for x in arr[1:]:
+        #current_sum = max(current_sum+x, x)
+        #current_sum = max(x, current_sum) # find max value
+        current_sum = max(current_sum+x, current_sum)
+        max_sum = max(current_sum, max_sum)
+        a.append(max_sum)
+    return '\n'.join(map(str,a))
+
+arr = [7,1,2,-1,3,4,10,-12,3,21,-19]
+print(max_sum(arr))
+
+# %%
+# reverse a string, sentence
+# start = 'this is the best'
+# end ='best the is this'
+
+def reverse_sent(str):
+    output =[]
+    if len(str) == 0:
+        return None
+    words = str.split(' ')
+    for word in words:
+        output.append(word)
+    output.reverse()
+    return ' '.join(output)
+
+print(reverse_sent('this is the best'))
+
+# one line code method
+def one_str_reverse(str):
+    return ' '.join(reversed(str.split()))
+    # return ' '.join(reversed(str.split()[::-1]))
+
+print(one_str_reverse('this is the best'))
+
+#!!!!!!!!!!!!!!!!!!!!!!
+#  two nested while index way, due to one loop for sentence, one for each word
+def use_index_reverse(string):
+    white_space = [' ']  # use list due to NOT IN, 
+    i = 0
+    outputs =[]
+
+    while i < len(string):
+        if string[i] not in white_space:
+            # is a word starting
+            word_start_pos = i
+
+            #!!!!!
+            # nested loop for every word between space:
+            while i < len(string) and string[i] not in white_space:
+                i +=1
+            # slice out the word, end the nested while
+            outputs.append(string[word_start_pos:i])
+        
+        # space count
+        i+=1
+    return ' '.join(reversed(outputs))
+
+print(use_index_reverse('this is the best'))
+# %%
+# array rotation
+# 2 arrays without duplicate, determine is one a rotaion of another
+# same size and elements but start index is different
+
+# method 1: loop second array to find the start index, break it when find it.
+# then loop first array use % to make a new index to array2
+
+# print(0%5) => 0 (4%7) =>4
+
+def mod_rotation(lst1, lst2):
+    if len(lst1) != len(lst2):
+        return False
+    l2_start_pos = 0
+
+    for i in range(len(lst2)):
+        if lst2[i] == lst1[0]:
+            l2_start_pos = i
+            break
+    if l2_start_pos == 0:
+        return False
+    
+    # !!!!!!!!!!!!!!!!!!!!!!!!
+    for x in range(len(lst1)):
+        l2_new_i = (x+l2_start_pos) % len(lst1)
+
+        if lst1[x] != lst2[l2_new_i]:
+            return False
+    return True
+
+
+a=[4,5,6,7,1,2,3]
+b=[1,2,3,4,5,6,7]
+print(mod_rotation(b,a))
+
+
+# %%
+# two array histrogram
+# use enumerate and hist
+def enu_hist_rotation(a, b):
+    
+    hist = {item :i for i, item in enumerate(a)}
+    for key in hist:
+        if key not in b:
+            return False
+        else:
+            b_index = hist[key]
+        if 
+
+
+# not good
+def enu_rotation(a, b):
+    value =0
+    for i, e in enumerate(a):
+        if e in b:
+            value = b.index(e)
+            print(value) 
+        else:
+            return False
+    return value
+    
+print(enu_rotation(['a','b','c','d'],['b','c','d','a']))
 
 # %%
