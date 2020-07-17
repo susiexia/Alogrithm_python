@@ -80,7 +80,9 @@ def two_sum_oneDict_one_Loop(lst, target):
             return (dic[n], index)
 
 # %%
+
 # array pair (sum [1,3,2,2], 4) ---> 2 pairs (1,3) (2,2)
+# set: unordered collection of unique element
 
 def pair_sum(nums, target):
     if len(nums) <2:
@@ -254,7 +256,7 @@ print(enu_rotation(['a','b','c','d'],['b','c','d','a']))
 # use while, and set up two iteration for 2 array! no need nested!!!!
 # because this is a sorted array, same opstion should have same element if common
 
-def common_while(a, b):
+#def common_while(a, b):
     output = []
     i = 0
     j = 0
@@ -262,14 +264,15 @@ def common_while(a, b):
     # 2 iteration in one while!!!!!!!!!!!!!!!!!!!!
     # need to consider if elements doen't same, move index
     # BUT its woring, due to maybe next index has same value
-    while i <len(a) and j<(len(b)):
-        if a[i] == b[j]:
-            output.append(a[i])
-        i +=1
-        j +=1
-    return output   
+    #while i <len(a) and j<(len(b)):
+        #if a[i] == b[j]:
+            #output.append(a[i])
+        #i +=1
+        #j +=1
+    #return output   
 
 # %%
+# common element in two sorted array
 # !!!!!!!!!!!!!!!!two pointer ofr two array!!!!!!!!!!
 def two_pointer_common(a, b):
     output = []
@@ -281,7 +284,7 @@ def two_pointer_common(a, b):
         if a[i] == b[j]:
             output.append(a[i])
             i +=1
-            j +=1   # why use 2
+            j +=1  
         elif a[i] > b[j]:
             j +=1
         else:
@@ -420,3 +423,204 @@ def flatten_matrix_conditional(matrix):
 
 print(flatten_matrix_conditional([['Mercury', 'Venus', 'Earth'], ['Mars', 'Jupiter', 'Saturn'], ['Uranus', 'Neptune', 'Pluto']] ))
 # %%
+# one array, most frequent occurance
+a =[ 2, 4, 7, 1,5, 5,5]
+
+# ? O(n^2) or O(2*n)
+def array_hist(lst):
+    hist = {}
+    max_value =0
+    for x in a:
+        hist[x] = hist.get(x, 0) +1
+    for k, value in hist.items():
+        max_value = max(max_value, value)
+        output = k
+
+    return output
+print(array_hist(a))
+
+
+# only loop once: O(n), no dict loop
+def most_frequent_oneLoop(lst):
+    hist = {}
+    max = 0
+    max_item = None
+
+    for x in lst:
+        hist[x] = hist.get(x, 0)+1
+        # stay in same list loop, and x must IN histogram
+        if hist[x] > max:
+            max = hist[x]
+            max_item = x
+    return x
+
+print(most_frequent_oneLoop(a))
+
+# %%
+# whether all character in a string are unique?
+
+# 1. use hist -=1 and check if len !=0
+def try_is_unique(string):
+    string = string.replace(' ','').lower() # clean space
+    hist = {}
+    for cha in string:
+        hist[cha] = hist.get(cha, 0)+1
+    for k,v in hist.items():
+        if v != 1:
+            return False
+    return True
+
+a = 'I am bcdef'
+print(try_is_unique(a))
+
+# ！！！！！！！！！！与 two sum 似！！！！！！！
+# use set unique to find duplicate cha
+def set_unique(string):
+    string = string.replace(' ','').lower() 
+    unique_cha = set()
+
+    # ONLY ONE LOOP FOR STRING
+    for cha in string:
+        if cha in unique_cha:
+            return False
+        else:
+            unique_cha.add(cha)
+    return True
+
+a = 'I am bcdef'
+print(set_unique(a))
+
+
+# 3. use set to string, compare to 
+# set is unordered collection of unique element
+def set_string_unique(string):
+    string = string.replace(' ','').lower() 
+    # string dont need to be a list
+    if len(set(string)) != len(string):
+        return False
+    return True
+a = 'I am bcdef'
+print(set_string_unique(a))
+
+# %%
+# FIRST NON REPEAT element in string;
+# a string, return character that never repeat, if multiple uniques 
+# return only first unique
+
+# use dictionary, 2 independent str loop 
+# O(2n)
+def non_repeating(s):
+    s = s.replace(' ','').lower()
+    hist ={}
+    for cha in s:
+        hist[cha] = hist.get(cha, 0)+1
+    
+    for x in s:
+        if hist[x] == 1:
+            return x
+    return None
+
+
+# O(2n)
+# use dictionary, loop dict 
+def dict_repeating(s):
+    s = s.replace(' ','').lower()
+    hist ={}
+    for cha in s:
+        hist[cha] = hist.get(cha, 0)+1
+    for k, v in hist.items():
+        if v == 1:
+            return k
+    return None
+
+a = 'I am Susie XIA, HOW R U'
+print(non_repeating(a))
+print(dict_repeating(a))
+# %%
+# SROTED DICT WITH UNIQUE
+# sorted dictrionary.items() and key pick up hist
+
+def sorted_unique(s):
+    s = s.replace(' ','').lower()
+    s = filter(lambda cha:cha.isalpha(), s)
+    hist ={}
+    for cha in s:
+        hist[cha] = hist.get(cha, 0)+1
+    all_quniue_lst = []
+    # use key and lambda: due to items() return a tuple(original is (cha, hist)), 
+    # lambda choose second item in each tuple to rank
+    rank = sorted(hist.items(), key=lambda t: t[1], reverse = False)
+
+    for  t in rank:
+        if t[1] == rank[0][1]:   # hist is 1
+            all_quniue_lst.append(t)
+    return all_quniue_lst
+
+def michigan_sorted_unique(s):
+    s = s.replace(' ','').lower()
+    s = filter(lambda cha:cha.isalpha(), s)
+    hist ={}
+    for cha in s:
+        hist[cha] = hist.get(cha, 0)+1
+    output =[(a,b) for b,a in sorted([(v,k) for k,v in hist.items()], reverse=True)]
+    return [x for x in output if x[1] == 1]
+
+a = 'I am Susie XIA, HOW R U'
+print(sorted_unique(a), '\n')
+print(michigan_sorted_unique(a))
+
+# %%
+# Binary search_ one array and one target number
+def binary_search(lst,target):
+    low = 0
+    high = len(lst)-1
+    
+
+    while low <= high:  # = also is true
+        mid = (high + low)//2
+        if lst[mid] == target:
+            return mid
+        if lst[mid] > target:
+            high = mid-1
+        else:
+            low = mid +1
+    return None
+
+# no loop use recursive binary search
+def recursive_bin_search(lst, target, low, high):
+    if low> high:   # base case of recursive
+        return False
+    else:
+
+
+
+
+
+
+# %%
+# recursion of sum(n to 1)
+def sum_n(n):
+    if n ==1:   # base cse, terminal case
+        return 1
+    else:
+        return n + sum_n(n-1)    # pushing function into call stack and pop as FILO
+print(sum_n(1))
+
+def factorial(n):
+    if n<0:
+        return -1
+    elif n<2:
+        return 1
+    else:
+        return n*factorial(n-1)
+
+# %%
+# while 
+def while_sum(n):
+    i = 0
+    total = 0
+    while i<= n:
+        total = total+i   # total + or * the iteration!!!
+        i +=1
+    return total
+print(while_sum(10))
