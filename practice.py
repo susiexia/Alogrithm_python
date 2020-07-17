@@ -588,23 +588,34 @@ def binary_search(lst,target):
 
 # no loop use recursive binary search
 def recursive_bin_search(lst, target, low, high):
-    if low> high:   # base case of recursive
+    if low> high:   # !!!!!!!!!!!base case of recursive
         return False
     else:
+        mid = (high+low)//2
+        if lst[mid] == target:
+            return mid
+        elif lst[mid] > target:
+            return recursive_bin_search(lst,target,low, mid-1)
+        else:
+            return recursive_bin_search(lst, target,mid+1, high)
 
+a = [1,2,4,6,7,8,9,15,21,32]
+
+print(binary_search(a,9))
+print(recursive_bin_search(a,9,0,len(a)-1))  # argument can be function
 
 
 
 
 
 # %%
-# recursion of sum(n to 1)
+# recursion nuatrual and factorial, and a corresonding while loop
 def sum_n(n):
     if n ==1:   # base cse, terminal case
         return 1
     else:
         return n + sum_n(n-1)    # pushing function into call stack and pop as FILO
-print(sum_n(1))
+print(sum_n(10))
 
 def factorial(n):
     if n<0:
@@ -613,8 +624,8 @@ def factorial(n):
         return 1
     else:
         return n*factorial(n-1)
+print(factorial(5))
 
-# %%
 # while 
 def while_sum(n):
     i = 0
