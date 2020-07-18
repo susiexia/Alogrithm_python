@@ -83,7 +83,7 @@ def two_sum_oneDict_one_Loop(lst, target):
 
 # array pair (sum [1,3,2,2], 4) ---> 2 pairs (1,3) (2,2)
 # set: unordered collection of unique element
-
+# use two pointer
 def pair_sum(nums, target):
     if len(nums) <2:
         return None
@@ -139,6 +139,19 @@ def max_sum(arr):
 
 arr = [7,1,2,-1,3,4,10,-12,3,21,-19]
 print(max_sum(arr))
+
+# %%
+# K’th Smallest/Largest Element in Unsorted Array 
+
+# quicksort: 2 seperate function, and recur
+def quick_sort(lst, target):
+    '''quick sort use pivot to ramdomly partition array, worst: O(n^2)
+    The idea is, not to do complete quicksort, 
+    but stop at the point where pivot itself is k’th smallest element. 
+    Also, not to recur for both left and right sides of pivot, 
+    but recur for one of them according to the position of pivot. '''
+    # https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
+    # https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
 
 # %%
 # reverse a string, sentence
@@ -215,7 +228,7 @@ def mod_rotation(lst1, lst2):
         l2_new_i = (x+l2_start_pos) % len(lst1)
 
         if lst1[x] != lst2[l2_new_i]:
-            return False
+            return False   # want to all True
     return True
 
 
@@ -615,6 +628,7 @@ def sum_n(n):
         return 1
     else:
         return n + sum_n(n-1)    # pushing function into call stack and pop as FILO
+            # return 1 + recur means a counter!!
 print(sum_n(10))
 
 def factorial(n):
@@ -635,3 +649,23 @@ def while_sum(n):
         i +=1
     return total
 print(while_sum(10))
+
+# sum of the number of digit
+# 125 -> 8
+def sum_digit(n):
+    if n//10 == 0:
+        return n
+    else:
+        return n%10 + sum_digit(n//10)
+
+
+# %%
+# basic fibonacci sequence
+def fib(n):
+    a = 0
+    b = 1
+    for i in range(n):
+        a,b = b, a+b
+    return a, b
+
+print(fib(10))
