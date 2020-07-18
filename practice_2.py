@@ -116,9 +116,10 @@ def inorder(root):
         inorder(root.right)
 
 # search (same as bin search) root is the mid!!!!!!!!!!!!!!!!!!!!
+# O(h) TREE HEIGHT
 def search(root, target):
     if root is None or root.val == target:
-        return root.val
+        return root
     else:
         if root.val > target:
             return search(root.left, target)
@@ -149,6 +150,14 @@ insert(root,Treenode(70))
 insert(root,Treenode(60))
 insert(root,Treenode(80))
 
-inorder(root)
 # inorder_lst(root)
+inorder(root)
+
+print(search(root, 30))  # return a treenode object 
+
 # %%
+# Lined List
+class ListNode:
+     def __init__(self, val=0, next=None):
+         self.val = val
+         self.next = next
