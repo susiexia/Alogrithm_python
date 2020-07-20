@@ -210,16 +210,19 @@ print(depth(root))  # return a treenode object
 
 # %%
 # bt depth-first search
-# LC 543
+# LC 543 # bt diameter:  the length of the longest path between any two nodes in a tree
+
 # max(depth of node.left, depth of node.right) + 1.
-def depth(root):
-    ans = 1
+def diameter_depth(root):
+    #num_nodes = 1
     if root is None:
-        return 0
+        return -1
     L = depth(root.left)
     R = depth(root.right)
-    #ans = max(ans, L+R+1)
+    #num_nodes = max(num_nodes, L+R+1)  
     return max(L,R) +1
+
+
 # %%
 # Lined List
 class ListNode:
@@ -269,7 +272,7 @@ def median_matrix(mat):
         lst.extend(mat[r_num])
     lst.sort
 
-    return int(lst[len(lst)//2]
+    return int(lst[len(lst)//2])
 
 a = [1,3,5]
 b = [2,6,9]
