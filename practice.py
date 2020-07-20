@@ -61,11 +61,23 @@ def sorted_anagrams(str1, str2):
     else:
         if sorted(str1) == sorted(str2):
             return True
+# %%
+# string permutation （whether two string have same charater）
+def is_permutation(s1,s2):
+    s1 = s1.replace(' ','').lower()
+    s2 = s2.replace(' ','').lower()
+    if len(s1) != len(s2):
+        return False
+    for cha in s1:
+        if cha in s2:
+            s2 = s2.replace(c, '',1) # replace count only 1
+    return len(s2) == 0
+
 
 # %% Two SUM in one list
 def two_sum(lst, target):
     for i in range(len(lst)-1):
-        for j in range(i, len(lst)):
+        for j in range(i+1, len(lst)):  # !!!!!i+1
             lst[i]+lst[j] == int(target)
             return (i, j)
 

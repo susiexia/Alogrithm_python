@@ -1,4 +1,14 @@
 # %%
+'''
+1. return 后门直接写 Boolean的公式，如 a==b 这样function会自动回True or Flase
+2. set.add(), set.discard('specified item') similar to set.remove(), 
+set.pop() due to no order, set pop remove a random element
+
+
+'''
+
+
+# %%
 # make a class of stack:
 class stack:
     # construct
@@ -64,9 +74,15 @@ def inwards_palin(str):
 
 # %%
 # closet value on array, use bin search 
-def closest(lst, target):
+# !!!!!!!!!!!!!ask mini diff, 
+# when you have mid number, outward to its neibor and compare min_diff to neibors, 
+# not mid because no other compare to
+
+a = [2,5,6,7,8,8,9]   # target 4, ask minimun diff
+
+def closest_bs(lst, target):
     # init a infinite large 
-    mini_diff = float('inf')
+    mini_diff = float('inf')  # init as positive inf 
     low = 0
     high = len(lst) -1
     output = None   # expect a single number, not a list
@@ -74,14 +90,37 @@ def closest(lst, target):
     # edge case: empty or only 1 element
     if len(lst) == 0:
         return None
-    if len(lst) = 1:
+    if len(lst) == 1:
         output = lst[0]
     
     while low <=high:
         mid = (high+low)//2
 
+        # compare mid neibors to determine direction
+        if mid +1 < len(lst):
+            right_diff = abs(lst[mid+1] - target)  # abs only one argument!!!!!
+        if mid -1 >0:
+            left_diff = abs(lst[mid-1] - target)
+        # compare to init and update
+        if right_diff < mini_diff:
+            mini_diff = right_diff
+            output = lst[mid+1]
+
+        if left_diff < mini_diff:
+            mini_diff = left_diff 
+            output = lst[mid-1]
         
-        mini_diff = abs(lst[mid] - target)
+        # regular bin search mid-point move
+        if lst[mid] > target:
+            high = mid -1
+        elif lst[mid] < target:
+            low = mid +1
+        else:
+            output = lst[mid]
+
+    return output
+
+print(closest_bs(a, 5.7))
 
 
 # %%
@@ -97,29 +136,30 @@ class Treenode:
 # 不用写method, 只是给attribute
 # r = Treennode(50)
 
-# -------------------------------------------------------------------
-
+# -----------------root means every node--------------------------------------------------
+# use recursive and the end leaf is the base case, reach it then backtrack
 # inorder list, recurive, backtrack order
+# root/ node is None, means it dont have left and right
 def inorder_lst(root):
-    
     if root is None:
         return []
     else:
         return inorder(root.left) + [root.val] +inorder(root.right)
+
 # dont want a list
 def inorder(root):
-    if root is None:
+    if root is None:  #Base case
         return None
     else:
         inorder(root.left)
-        print(root.val)
+        print(root.val)    # recursive code
         inorder(root.right)
 
 # search (same as bin search) root is the mid!!!!!!!!!!!!!!!!!!!!
 # O(h) TREE HEIGHT
 def search(root, target):
-    if root is None or root.val == target:
-        return root
+    if root is None or root.val == target:    #Base case
+        return root   # recursive code
     else:
         if root.val > target:
             return search(root.left, target)
@@ -128,12 +168,12 @@ def search(root, target):
     
 # insert node
 def insert(root, new_node):
-    if root is None:
-        root.val = new_node
+    if root is None:   #Base case
+        root.val = new_node  # recursive code
     else:
         if root.val > new_node.val:
             if root.left is None:
-                root.left = new_node
+                root.left = new_node   # recursive code
             else: # call left recursive
                 insert(root.left, new_node)
         else:
@@ -141,6 +181,18 @@ def insert(root, new_node):
                 root.right = new_node
             else: # call right recursive
                 insert(root.right, new_node)
+
+# use L= R= to store the length
+def depth(root):
+    
+    if root is None:   #Base case
+        return -1    #not O,not None
+        # due to leaf node execution max(-1,-1) +1 = 0 !!!!!
+    L = depth(root.left)
+    R = depth(root.right)
+    #ans = max(ans, L+R+1)
+    return max(L,R) +1   # 1 is the root node
+                # recursive code
 
 root = Treenode(50)
 insert(root,Treenode(30))
@@ -153,11 +205,74 @@ insert(root,Treenode(80))
 # inorder_lst(root)
 inorder(root)
 
-print(search(root, 30))  # return a treenode object 
+print(depth(root))  # return a treenode object 
 
+
+# %%
+# bt depth-first search
+# LC 543
+# max(depth of node.left, depth of node.right) + 1.
+def depth(root):
+    ans = 1
+    if root is None:
+        return 0
+    L = depth(root.left)
+    R = depth(root.right)
+    #ans = max(ans, L+R+1)
+    return max(L,R) +1
 # %%
 # Lined List
 class ListNode:
      def __init__(self, val=0, next=None):
          self.val = val
          self.next = next
+
+
+
+
+# %%
+# digit by digit addtion, column by column
+# array + one integer  : Time and Space Complexity: O(max(N, log K))
+# !!!!!! the last digit add the whole target, and leave 1 as its digit, 
+# repeat process until reaching the first element
+'''Input: A = [2,1,5], K = 806
+Output: [1,0,2,1]
+Explanation: 215 + 806 = 1021
+'''
+# divmod(x,y) => Return the tuple (x//y, x%y).
+def addtion_array(lst, target):
+    
+    # add whole numbers of target in the last digit
+    lst[-1] = lst[-1]  + target   # due to list is mutable
+    print(lst[-1])
+    for i in range(len(lst)-1,-1,-1): # from large to small
+        
+        # this digit number, due to its a muteble list, str cannot change directly
+        carry, lst[i] = divmod(lst[i], 10)
+        if i > 0: # ensure i-1 not < 0
+            lst[i-1] += carry
+    print(lst)
+    if carry >0:    # the vary first digit, in this case its 1000
+        lst = list(map(int, str(carry))) + lst
+
+    return lst
+
+A = [2,1,5]
+K = 806
+print(addtion_array(A, K))
+
+# %%
+# find a metrix overall median, n*m is odd
+def median_matrix(mat):
+    lst = []
+    for r_num in range(len(mat)):
+        lst.extend(mat[r_num])
+    lst.sort
+
+    return int(lst[len(lst)//2]
+
+a = [1,3,5]
+b = [2,6,9]
+c = [3,6,9]
+mat = [a,b,c]
+print(median_matrix(mat))
