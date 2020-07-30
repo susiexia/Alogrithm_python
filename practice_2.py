@@ -64,7 +64,7 @@ def inwards_palin(str):
             i +=1
         while i<j and not str[j].isalphnum():
             j -=1
-        if i<j and str[i].lower() != str[j].lower()
+        if i<j and str[i].lower() != str[j].lower():
             return False
             break
         i +=1
@@ -279,3 +279,79 @@ b = [2,6,9]
 c = [3,6,9]
 mat = [a,b,c]
 print(median_matrix(mat))
+
+
+
+# %% # single number LC 136
+# linear runtime
+#Given a non-empty array of integers, 
+# every element appears twice except for one. Find that single one.
+
+# dict, O(n) | O(n) for dict
+# !!!!!!!!!!!search dict only take O(1) !!!!!!!!!!!!!!!!
+def single_num(lst):
+    hist ={}
+    for x in lst:
+        hist[x] = hist.get(x,0)+1
+    for k,v in hist.items():
+        if v == 1:
+            return k 
+
+A = [4,1,2,1,2]
+print(single_num(A))
+
+# O(n2) use list
+def single_num_nodict(lst):
+    temp =[]
+    for x in lst:
+        if x not in temp:
+            temp.append(x)
+        else:
+            temp.remove(x)
+    return temp.pop()
+print(single_num_nodict(A))
+
+# %%
+# LC 202 how to get the next number, divmod method
+
+def get_next(n):
+    total_sum = 0
+    while n>0:
+        n, digit = divmod(n,10)
+        # right now n is continue loop
+        total_sum = total_sum + digit **2
+    return total_sum
+
+
+# check if the number total_sum =1, 1 true
+def happy_number(num): 
+
+    def get_next(n):
+        total_sum = 0
+        while n>0:
+            n, digit = divmod(n,10)
+            # right now n is continue loop
+            total_sum = total_sum + digit **2
+        return total_sum
+
+    seen = set()
+    while n != 1 and n not in seen:
+        seen.add(n)
+        n = get_next(n)
+    if n ==1:
+        return True
+
+# %%
+# LC 219 # find min range of 2 duplicate numbers in array
+
+def range_duplicate(nums, k):
+    min_range = len(nums)
+    for i in range(len(nums)):
+        for j in range(len(nums)-1,-1,-1):
+                
+            if i<j and nums[i] == nums[j]:
+                cur_range = abs(j-i)
+                min_range = min(cur_range, min_range)
+        
+    return min_range 
+print(range_duplicate([1,2,3,1,2,3],2))

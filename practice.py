@@ -213,6 +213,27 @@ def use_index_reverse(string):
     return ' '.join(reversed(outputs))
 
 print(use_index_reverse('this is the best'))
+
+# %%
+# nested while other use case: skip the nested while, not like above case to generate nested while
+# 2 pointers inward to find is palindrome
+def is_palindrome(s):
+    i,j =0, len(s)-1
+
+    while i<j:
+        # nested while to skip space and continuing change 2 pointer
+        # simply ignore non-alphanumeric characters by continuing to traverse further
+        while i<j and not s[i].isalnum():
+            i +=1
+        # independent to above nested while
+        while i<j and not s[j].isalnum():
+            j -=1
+        # isalnum and compare if same 
+        if i<j and s[i].lower() != s[j].lower():
+            return False
+        i +=1
+        j -=1
+    return True
 # %%
 # array rotation
 # 2 arrays without duplicate, determine is one a rotaion of another
