@@ -387,7 +387,7 @@ def mine_sweeper(bombs, row, col):
     # return field： a all 0 metrix with 1 marked bomb
         # neibor 3*3 sub metrix
         row_neibor_range = range(b_row -1, b_row +2) # may has negative
-        col_neibor_range = range(b_col -1, b_col +2) 
+        col_neibor_range = range(b_col -1, b_col +2) # +2 due to range exlucsive the end
 
         for i in row_neibor_range:
             for j in col_neibor_range:
@@ -402,7 +402,19 @@ def mine_sweeper(bombs, row, col):
 
 
 print(mine_sweeper([[0,0],[1,2]], 3, 4))
-
+# %%
+# number of island
+#part 1 , find all 1 
+def total_1(grid):
+    for i in range(len(grid)):
+        for j in range(len(gird[0])): # only care about the lenth range,for range iterate
+            if grid[i][j] == '1'
+                return bla
+    # for loop without range
+    for row in grid:
+        for value in row:
+            return blabla
+            
 # %%
 output1 = set()
 output2 = set()

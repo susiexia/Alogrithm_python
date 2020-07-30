@@ -182,3 +182,169 @@ def sqrt_prime(n):
         else:
             print(i, 'is prime')
 print(sqrt_prime(30))
+
+# %%
+# valid parenthesis
+# stack can help us process this recursively 
+# i.e. from outside to inwards.
+
+# Time complexity : O(n)O(n) because we simply traverse the given string one character at a time 
+# and push and pop operations on a stack take O(1)O(1) time.
+#Space complexity : O(n)O(n) as we push all opening brackets onto the stack 
+def stack_parent(s):
+    b_dict = {')':'(', ']':'[','}':'{'}
+    stack =[]
+
+    if len(s) %2 != 0:
+        return False
+    #if len(s) == 0:
+        #return True
+
+    for x in s:
+        if x not in b_dict:
+            stack.append(x)
+        else:
+            if len(stack) >0 and stack[-1] == b_dict[x]:
+                stack.pop()
+            
+    if len(stack) >0:
+        return False
+    return True
+
+# %%
+ # matrix, recursive, DFS !!!!!!!!!!!
+
+ def num_islands(grid):
+    root_total =0
+     # dfs, recursive
+    row_range = len(grid)
+    col_range = len(grid[0])
+
+    if row_range <1:
+        return 0
+    def part_island(grid, i, j):
+        # base case
+        if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or grid[i][j] != '1':
+                return None
+            else:
+                grid[i][j] = "-1"   # or -1 or whatever
+            # recursive all posssible neibors
+            dfs(grid, i - 1, j)
+            dfs(grid, i + 1, j)
+            dfs(grid, i, j - 1)
+            dfs(grid, i, j + 1))
+
+    
+    for r in range(row_range):
+        for c in range(col_range): # only length range
+            if grid[r][c] == '1':
+                # add count first!! this is the root
+                root_total +=1
+                # call function to mark non-root to -1
+                part_island(grid,r,c)
+    return root_total
+
+# %% 414
+# find the 3rd maximun value, if not, return maximun
+# use set to remove dupilcate value
+
+# O(n), space O(1)
+def max_3_set(lst):
+    max_set = set()
+
+    for x in lst:
+        if x not in max_set:
+            max_set.add(x)
+            # after add, immediately check lenth
+            if len(max_set) > 3:
+                max_set.remove(min(max_set))
+    if len(max_set) ==3:
+        return min(max_set)
+    return max(max_set)
+
+
+# # O(n), space O(n)In the worst case, the HashSet is the same size as the input Array, and so requires O(n)O(n) space to store.
+def regular_max3(lst):
+    num_set = set(lst)
+
+    first_max = max(num_set)
+    if len(num_set) <3:
+        return first_max
+    else:
+        # remove first and second
+        num_set.remove(first_max)
+        second = max(num_set)
+        num_set.remove(second)
+
+        return max(num_set)
+# list also have remove(element), pop(i), del list[1:] del list[0] 
+# set dont have del, unless del whole set, and del in list is for position, slice
+
+# %%
+# two sorted list, a:m > b:n, merge B into A and sort again
+# 88 LC
+# quick sort:  o(m+n log m+n) | o(log m+n)
+def quick_sort_merge(a,b):
+    a[m:] =b
+    return sorted(a)
+
+# two pointer from start, WHILE
+# O(m+n) | O(m+n)
+def two_pointer_merge(a,b,m,n):
+    cut_a = a[:m]
+    a[:] =[]  #  since ask directly modify on A
+    i = 0
+    j = 0
+    while i < m and j < n:
+        if cut_a[i] < b[j]:
+            a.append(a[i])
+            i +=1
+        else:
+            a.append(b[j])
+            j +=1
+    # rest part
+    if i <m:
+        a[i+j:] = cut_a[i:]
+    if j<n:
+        a += b[j:]
+
+# O(m+n) | O(1)
+# two pointers but backforward
+def back_merge(a,b,m,n):
+'''redo!!!!!'''    
+        # two get pointers for nums1 and nums2
+        p1 = m - 1
+        p2 = n - 1
+        # set pointer for nums1
+        p = m + n - 1
+        
+        # while there are still elements to compare
+        while p1 >= 0 and p2 >= 0:
+            if nums1[p1] < nums2[p2]:
+                nums1[p] = nums2[p2]
+                p2 -= 1
+            else:
+                nums1[p] =  nums1[p1]
+                p1 -= 1
+            p -= 1
+        
+        # add missing elements from nums2
+        nums1[:p2 + 1] = nums2[:p2 + 1]
+
+# %%
+# dictionary sort 
+def topKFrequent(nums, k):
+    hist = {}
+    
+    for x in nums:
+        hist[x] = hist.get(x,0)+1
+            
+    lst = [key for key, v in sorted(hist.items(), key = lambda x:x[1], reverse =True)]
+    
+    return lst[:k]
+
+a = [1,1,1,2,2,3]
+k = 2
+print(topKFrequent(a,k))
+
+# %%
