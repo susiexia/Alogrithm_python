@@ -230,7 +230,22 @@ class ListNode:
          self.val = val
          self.next = next
 
+# merge 2 sorted linked list
+'''redo'''
+def recursive_merge(l1, l2):
+'''we determine which of l1 and l2 has a smaller head, 
+and recursively set the next value for that head to the next merge result. '''
+    if l1 is None:  # base case
+        return l2
+    if l2 is None:
+        return l1
+    if l1.val > l2.val:    # l2 have a smaller head
+        l2.next =  recursive_merge(l1,l2.next)
+        return l2
 
+    else:
+        l1.next = recursive_merge(l1.next, l2)
+        return l1    # base case
 
 
 # %%

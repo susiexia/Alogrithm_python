@@ -1,5 +1,36 @@
+
 # %%
-# meeting room (sort , two pointer but related )
+# sort FB
+# MERGE INTERVALS LC 56 medium
+# a temp
+# time O(n logn) space o(n)
+def merge_interval(intervals):
+    res = []
+    
+    ls = sorted(intervals, key = lambda x:x[0])
+    for x in ls:
+        # not overlap or the first one
+        if not stack or x[0] > stack[-1][1]: 
+            stack.append(x)
+        else:
+            res[-1][1] = max(res[-1][1], x[1])
+    return res
+# follow up 
+''' How do you add intervals and merge them for a large stream of intervals? '''
+# %%
+# top 4
+# meeting arrange
+# 用这个
+# since j = i+1, so only use i to iterate !!!!!!!!!!
+def meeting_interval(lst, k):
+    lst = sorted(lst)
+
+    for i in range (len(lst)-1):
+        if lst[i+1][0] < lst[i][1]:
+            return False
+    return True
+
+# meeting room determine no overlapping (sort , two pointer but related )
 
 def canAttendMeetings(intervals):
     if len(intervals) <2:
@@ -22,16 +53,28 @@ def canAttendMeetings(intervals):
     return True
 print(canAttendMeetings([[6,10],[13,14],[12,14]]))
 
-# meeting arrange
-# since j = i+1, so only use i to iterate !!!!!!!!!!
-def meeting_interval(lst, k):
-    lst = sorted(lst)
 
-    for i in range (len(lst)-1):
-        if lst[i+1][0] < lst[i][1]:
-            return False
-    return True
 
+# %%
+'''need review'''
+# minimum meeting room 
+def sperate_sort(intervals):
+    
+    room = 0
+    start_list = sorted([x[0] for x in intervals])
+    end_list = sorted([x[1] for x in intervals])
+
+    si = 0
+    ji = 0
+    while si<len(intervals): # only si control
+        # a free room release
+        if start_list[si] >= end_list[ji]:
+            room -=1
+            ji +=1
+        # anyway, need to move si
+        room +=1
+        si +=1
+    return room
 # %%
 # 失败
 # 253 meeting room minimum
@@ -79,27 +122,6 @@ def minMeetingRooms(intervals):
                 if  not_overlap(intervals[j],intervals[i]):
                     total += 1
         return total
-# %%
-    def minMeetingRooms(self, intervals):
-        """
-        :type intervals: List[Interval]
-        :rtype: int
-        使用优先队列算法, 生成优先队列, 代表已开的房间, 先将时间段按照开始时间排序, 遍历时间段, 如果没有多余的房间, 则将这个会议的加到队列里, 如果有多余的房间且目前会议的起始之间在上个会议的终止时间之后, 更新队列.
-Time: O(n)
-Space: O(1)
-        """
-        # sort the intervals by start time
-        intervals.sort(key = lambda x: x.start)
-        heap = []
-        for interval in intervals:
-            if heap and interval.start >= heap[0]:
-                # room is already used in last meeting and continue to use the same room for this meeting
-                heapq.heapreplace(heap, interval.end)
-                
-            else:
-                heapq.heappush(heap, interval.end)
-                
-        return len(heap)
 
 # %%
 # alien dict
@@ -146,6 +168,7 @@ for n in range(2, 10):
         print(n, 'is a prime number')
 
 # %%
+# top 2
 def is_prime(n):
     isPrime_bool = [True]* (n+1) # a list of all true, from 0
     #isPrime_bool = [True for x in range(n+1)]
@@ -212,6 +235,7 @@ def stack_parent(s):
     return True
 
 # %%
+# top3
  # matrix, recursive, DFS !!!!!!!!!!!
 
  def num_islands(grid):
@@ -281,6 +305,7 @@ def regular_max3(lst):
 # set dont have del, unless del whole set, and del in list is for position, slice
 
 # %%
+# top 1
 # two sorted list, a:m > b:n, merge B into A and sort again
 # 88 LC
 # quick sort:  o(m+n log m+n) | o(log m+n)
@@ -332,6 +357,21 @@ def back_merge(a,b,m,n):
         nums1[:p2 + 1] = nums2[:p2 + 1]
 
 # %%
+# sorted linked list 
+# recursive
+'''redo!!!!!''' 
+    def mergeTwoLists(self, l1, l2):
+        if l1 is None:
+            return l2
+        elif l2 is None:
+            return l1
+        elif l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+# %%
 # dictionary sort 
 def topKFrequent(nums, k):
     hist = {}
@@ -348,3 +388,98 @@ k = 2
 print(topKFrequent(a,k))
 
 # %%
+# top 1
+# intersection of Two arrays
+# 2 set, easy 
+def two_set_intersection(a,b):
+    '''time: O(m+n) space O(m+n)'''
+    num1_set = set(nums1)
+    num2_set = set(nums2)
+    res = []
+        
+    if not num1_set or not num2_set:
+        return None
+        
+    for x in num1_set:
+        if x in num2_set:
+            res.append(x) 
+            
+    return res
+
+# follow up : time o(n), and 2 list are sorted,if sort by your self
+# time O(m log m + n log n) indepent sort
+# two pointers
+def o1_intersection(a,b):
+    res = set()
+    i = 0
+    j = 0
+    while i < len(a) and j <len(b):
+        if a[i] == b[j]:
+            res.add(a[i])
+            i +=1
+            j +=1
+        elif a[i] > b[j]:
+            j +=1
+        else:
+            i +=1
+    return res
+
+# foolow up more
+'''
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?'
+
+It's a good idea to check array sizes and use a dictionary for the smaller array.(save space) It will reduce memory usage when one of the arrays is very large.
+'''
+def dic_intersection(a,b):
+    # hist for smaller size to save space, and substruct dictionary!!!
+    # time O(m+n), dict lookup: O(1)
+    hist ={}
+    res = []
+
+    for x in a:
+        hist[x] = hist.get(x,0)+1
+    for y in b:
+        if y in hist and hist.get(y,0) >0: # hist[y] >0
+            res.append(y)
+    return res
+
+# %%
+# 560 sub array sum = k
+# sum[0:i]-sum[0:j] =k  [i:j] sum is k and its our target
+# make hist for cumulative sum, every time encounter a new sum, make new dict key 
+# and determine how many times cumulative_sum -k occured. 
+# since it will determine the number of times a subarray with sum k has occured upto the current index
+# sum(i,j)=sum(0,j)-sum(0,i),
+'''每一次的prefix sum 都记录在dict中， 当sum-k 等于其中一个的Key 时
+说明从那个j 到现在的位置i的总和 就是 K， 然后继续cur_sum cumulative （i） 当key,放入hist 里 
+如果又遇到 cumul (i) -k 已在dict 中， 把value全加入答案里
+但是 cumul (i)-k 得到的是只需要在result里升级， 不需要在原来dict里 increment，
+
+开始一定要dict key 0 开始！presum = [0]'''
+# O(n) | O(n)
+import collections
+def sum_subarray(a, k):
+
+    pre_sum = [0]
+    result = 0
+    #hist = collections.Counter(pre_sum)
+    hist = {}
+    hist[pre_sum[-1]] = hist.get(pre_sum[-1],0)+1
+    # or just make an {0:1}
+    for x in a:
+        cur_sum = pre_sum[-1] + x  # cumulative SUM!!!!!!!
+        pre_sum.append(cur_sum)   
+        
+        if (cur_sum-k) in hist:
+            result += hist[cur_sum-k]  # all times occurs
+        # same as two_sum!!!!!!!!!!!!!!!!!!!!!!
+        hist[cur_sum] = hist.get(cur_sum, 0) +1
+    return result
+
+a = [3,4,7,2,-3,1,4,2]
+print(sum_subarray(a, 7))
+
+# %%
+# 238 product of array except self

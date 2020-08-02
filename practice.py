@@ -104,6 +104,9 @@ def pair_sum(nums, target):
         for j in range(len(nums)-1,-1,-1):
             if nums[i] + nums[j] == target:
                 output.add((min(nums[i], nums[j]), max(nums[i], nums[j])))
+
+                # merge interval also use max ()  
+
     return '\n'.join(map(str,list(output))
     
 
