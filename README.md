@@ -1,2 +1,3 @@
 # Alogrithm_python
-Practice algorithms in Python
+
+Algorithms practice in Python
