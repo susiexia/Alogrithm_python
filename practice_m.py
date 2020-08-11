@@ -10,8 +10,8 @@ def merge_interval(intervals):
     ls = sorted(intervals, key = lambda x:x[0])
     for x in ls:
         # not overlap or the first one
-        if not stack or x[0] > stack[-1][1]: 
-            stack.append(x)
+        if not res or x[0] > res[-1][1]: 
+            res.append(x)
         else:
             res[-1][1] = max(res[-1][1], x[1])
     return res
@@ -55,7 +55,6 @@ print(canAttendMeetings([[6,10],[13,14],[12,14]]))
 
 
 
-# %%
 '''need review'''
 # minimum meeting room 
 def sperate_sort(intervals):
@@ -187,8 +186,7 @@ def is_prime(n):
         if isPrime_bool[x] is True:
             count +=1
             #yield x
-    
-    return count
+    return len(count)
 print(is_prime(30))
 
 # %%
@@ -207,6 +205,7 @@ def sqrt_prime(n):
 print(sqrt_prime(30))
 
 # %%
+# checked
 # valid parenthesis
 # stack can help us process this recursively 
 # i.e. from outside to inwards.
@@ -236,6 +235,7 @@ def stack_parent(s):
 
 # %%
 # top3
+# checked
  # matrix, recursive, DFS !!!!!!!!!!!
 
  def num_islands(grid):
@@ -357,6 +357,7 @@ def back_merge(a,b,m,n):
         nums1[:p2 + 1] = nums2[:p2 + 1]
 
 # %%
+# checked
 # sorted linked list 
 # recursive
 '''redo!!!!!''' 
@@ -389,6 +390,7 @@ print(topKFrequent(a,k))
 
 # %%
 # top 1
+#checked
 # intersection of Two arrays
 # 2 set, easy 
 def two_set_intersection(a,b):

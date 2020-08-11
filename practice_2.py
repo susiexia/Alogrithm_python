@@ -1,6 +1,6 @@
 # %%
 '''
-1. return 后门直接写 Boolean的公式，如 a==b 这样function会自动回True or Flase
+1. return + Boolean, for instance, a==b , then return will auto return True or False
 2. set.add(), set.discard('specified item') similar to set.remove(), 
 set.pop() due to no order, set pop remove a random element
 
