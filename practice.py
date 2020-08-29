@@ -29,7 +29,7 @@ def anagrams(str1, str2):
     else:
         return True
 
-# 三个循环。 用一个DICT 在第二个str中减去, 最后循环dict看是不是全是O
+
 def anagrams_3loop(str1, str2):
     # clean
     if len(str1) != len(str2):
@@ -300,25 +300,7 @@ def enu_rotation(a, b):
     
 print(enu_rotation(['a','b','c','d'],['b','c','d','a']))
 
-# %%
-# common element in two sorted array
-# use while, and set up two iteration for 2 array! no need nested!!!!
-# because this is a sorted array, same opstion should have same element if common
 
-#def common_while(a, b):
-    output = []
-    i = 0
-    j = 0
-    
-    # 2 iteration in one while!!!!!!!!!!!!!!!!!!!!
-    # need to consider if elements doen't same, move index
-    # BUT its woring, due to maybe next index has same value
-    #while i <len(a) and j<(len(b)):
-        #if a[i] == b[j]:
-            #output.append(a[i])
-        #i +=1
-        #j +=1
-    #return output   
 
 # %%
 # common element in two sorted array

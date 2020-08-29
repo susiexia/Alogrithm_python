@@ -133,7 +133,7 @@ class Treenode:
         self.val = val
         self.left = left
         self.right = right
-# 不用写method, 只是给attribute
+# no method, only create attribute
 # r = Treennode(50)
 
 # -----------------root means every node--------------------------------------------------

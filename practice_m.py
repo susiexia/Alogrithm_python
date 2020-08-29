@@ -1,6 +1,6 @@
 
 # %%
-# sort FB
+
 # MERGE INTERVALS LC 56 medium
 # a temp
 # time O(n logn) space o(n)
@@ -20,7 +20,7 @@ def merge_interval(intervals):
 # %%
 # top 4
 # meeting arrange
-# 用这个
+
 # since j = i+1, so only use i to iterate !!!!!!!!!!
 def meeting_interval(lst, k):
     lst = sorted(lst)
@@ -75,7 +75,7 @@ def sperate_sort(intervals):
         si +=1
     return room
 # %%
-# 失败
+# Failure!!
 # 253 meeting room minimum
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
         if len(intervals) ==0:
