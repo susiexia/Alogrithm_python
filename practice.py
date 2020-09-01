@@ -132,6 +132,8 @@ def pair_sum_2set(nums, target):
 
 print(pair_sum_2set([1,3,2,2], 4))
 # %%
+# LC 53: max subarray
+# approach 2: greedy
 # largest sum:
 # take an array with positive and negative integers and find max sum of array
 
@@ -145,9 +147,10 @@ def max_sum(arr):
     max_sum = current_sum = arr[0]
 
     for x in arr[1:]:
-        #current_sum = max(current_sum+x, x)
+        current_sum = max(current_sum+x, x) #### LC 53: due to its a subarray, if X is a large positive num,
+                                            #### The previous all sub can be throw up, and everything start with X
         #current_sum = max(x, current_sum) # find max value
-        current_sum = max(current_sum+x, current_sum)
+        #current_sum = max(current_sum+x, current_sum) #WRONG!!!  it willnot pick up the cureent optimal
         max_sum = max(current_sum, max_sum)
         a.append(max_sum)
     return '\n'.join(map(str,a))
